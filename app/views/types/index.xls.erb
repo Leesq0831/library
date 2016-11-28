@@ -1,0 +1,19 @@
+<table  border="1">
+<caption>图书列表</caption>
+  <tr class = "tr1">
+    <th>图书类别</th>
+    <th>种数</th>
+  </tr>
+  <%  if  @types.size == 0  %>
+  <tr>
+    <td  colspan="6">记录为空</td>
+  </tr>
+  <%  else  %>
+  <% @types.each do |type| %>
+    <tr  id="type_<%= type.id %>">
+      <td><%=  type.b_type %></td>
+      <td><%= Book.con(type.id)  %></td>
+    </tr>
+  <% end %>
+  <%  end  %>
+</table>

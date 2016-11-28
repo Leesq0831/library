@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>C num:</strong>
+  <%= @car.c_num %>
+</p>
+
+<p>
+  <strong>Con:</strong>
+  <%= @car.con %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @car.product %>
+</p>
+
+<%= link_to 'Edit', edit_car_path(@car) %> |
+<%= link_to 'Back', cars_path %>

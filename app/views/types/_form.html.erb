@@ -1,0 +1,23 @@
+<%=  form_for  @type,  :remote  => true   do  |f|  %>
+  <table  id="nt_tab">
+    <tr>
+      <td  id="nt_tdl">
+        <%=  f.label  :类型  %>
+      </td>
+      <td>
+        <%=  f.text_field  :b_type,  :placeholder  =>  '2-15字符'  %>
+      </td>
+      <td  id="nt_tdr">
+        <span id="error"> 
+          <%  if  !@type.errors[:b_type].blank?  %>
+          <%=  @type.errors[:b_type][0]  %>
+          <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td  colspan="2"><%=  f.submit '保存',  :data => { :"disable-with" => "请稍等..." }  %></td>
+      <td></td>
+    </tr>
+  </table>
+<%  end  %>

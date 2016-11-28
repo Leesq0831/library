@@ -1,0 +1,52 @@
+<style type="text/css">
+#rtab{
+  width: 500px;
+}
+  #trr{
+    height: 26px;
+    text-align: center;
+    font-size: 18px;
+
+  }
+  #tdl{
+    width: 200px;
+  }
+  #tdr{
+    width: 150px;
+  }
+</style>
+<center>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+<table id="rtab">
+    <tr  id="trr">
+      <td  id = "tdl">注册</td>
+      <td  id = "tdr"></td>
+    </tr>
+    <tr id="trr">
+      <td id="tdl">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱
+      <%= f.email_field :email, autofocus: true %></td>
+      <td id="tdr"></td>
+    </tr>
+    
+    <tr  id="trr">
+      <td   id="tdl">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码
+      <%= f.password_field :password, autocomplete: "off" %></td>
+      <td id="tdr"></td>
+    </tr>
+
+    <tr  id="trr">
+      <td  id="tdl"> <%= f.label :确认密码 %>
+      <%= f.password_field :password_confirmation, autocomplete: "off" %></td>
+      <td id="tdr"></td>
+    </tr>
+
+    <tr  id="trr">
+      <td  id="tdl"> <%= f.submit "注册" %></td>
+      <td id="tdr"></td>
+    </tr>
+
+</table>
+<% end %>
+<%= render "devise/shared/links" %>
+</center>

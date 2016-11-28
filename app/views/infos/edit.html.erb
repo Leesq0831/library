@@ -1,0 +1,132 @@
+<style type="text/css">
+  
+  #e_n_tab{
+    width: 500px;
+  }
+  #i_e_tdl{
+    width: 90px;
+    font-size: 18px;
+    text-align:justify;
+    -moz-text-align-last:justify;
+    text-align-last:justify;
+  }
+  #i_e_tdr{
+    width: 190px;
+  }
+  #i_e_tr{
+    height: 35px;
+  }
+  #error{
+   color: red;
+   font-size: 10px;
+   line-height: 10px;
+  }
+  select{
+    width: 220px;
+  }
+</style>
+
+<center>
+<div  id="e_i_t">
+  <%=  form_for :info,  url:  info_path(@info),  
+                                     method: :patch  do  |f|  %>
+  <table  id="e_n_tab">
+    <tr>
+      <td colspan="2">添加书籍明细</td>
+      <td></td>
+    </tr>
+    <tr  id="i_e_tr">
+      <td  id="i_e_tdl">作者</td>
+      <td  id="i_e_tdc">
+        <%=  f.text_field  :author,  :value  =>  @info.author,
+                                                    :style  =>  'width:220px;',
+                                                    :maxlength  =>  40  %>
+      </td>
+      <td  id="i_e_tdr">
+        <span  id="error">最多40个字符</span>
+      </td>
+    </tr>
+    <tr  id="i_e_tr">
+       <td  id="i_e_tdl">出版社</td>
+       <td  id="i_e_tdc">
+        <%=  f.text_field  :p_place,  :value  =>  @info.p_place,
+                                                     :style  =>  'width:220px;' ,
+                                                     :maxlength  =>  40  %>
+       </td>
+       <td  id="i_e_tdr">
+         <span  id="error">最多40个字符</span>
+       </td>
+    </tr>
+    <tr  id="i_e_tr">
+      <td  id="i_e_tdl">出版年份</td>
+      <td  id="i_e_tdc">
+        <%=  f.text_field  :p_time,  :value  =>  @info.p_time  %>
+      </td>
+      <td  id="i_e_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:p_time].blank?  %>
+           <%=  @info.errors[:p_time][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr  id="i_e_tr">
+      <td  id="i_e_tdl">页数</td>
+      <td  id="i_e_tdc">
+        <%=  f.text_field  :p_num,  :value  =>  @info.p_num  %>
+      </td>
+      <td  id="i_e_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:p_num].blank?  %>
+           <%=  @info.errors[:p_num][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr  id="i_e_tr">
+      <td  id="i_e_tdl">语言</td>
+      <td  id="i_e_tdc">
+      <%= select(:info,:language,options_for_select(Info.find_lan, 
+                                  @info.language))  %>  
+      </td>
+      <td  id="i_e_tdr"></td>
+    </tr>
+    <tr  id="i_e_tr">
+      <td  id="i_e_tdl">开本</td> 
+      <td  id="i_e_tdc">
+        <%=  f.text_field  :format,  :value  =>  @info.format  %>
+      </td>
+      <td  id="i_e_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:format].blank?  %>
+           <%=  @info.errors[:format][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr  id="i_e_tr">
+      <td  id="i_e_tdl">简介</td>
+      <td  id="i_e_tdc">
+        <%=  f.text_area  :introduce,  
+                                     :value  =>  @info.introduce,
+                                     :style  =>  'width:220px;height:80px;font-size:14px;' %>
+      </td>
+      <td  id="i_e_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:introduce].blank?  %>
+           <%=  @info.errors[:introduce][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+      <%=  f.hidden_field  :id,  :value  =>  @info.id  %>
+      <%=  f.hidden_field  :book_id,  :value  =>  @info.book_id  %>
+      <%=  f.submit '保存'  %>
+      <td>
+    </tr>
+  </table>
+  <%  end  %>
+</div>
+</center>

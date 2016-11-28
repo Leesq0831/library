@@ -1,0 +1,152 @@
+<style type="text/css">
+  #i_n_tab{
+    width: 500px;
+  }
+  #i_n_tdl{
+    width: 90px;
+    font-size: 16px;
+    text-align:justify;
+    -moz-text-align-last:justify;
+    text-align-last:justify;
+  }
+  #i_n_tdr{
+    width: 190px;
+  }
+  #i_n_tr{
+    height: 20px;
+  }
+  #error{
+   color: red;
+   font-size: 10px;
+   line-height: 10px;
+  }
+  select{
+    width: 220px;
+  }
+</style>
+<center>
+<div  id="n_i_t">
+  <%=  form_for :info,  url:  infos_path do  |f|  %>
+  <table  id="i_n_tab">
+    <tr>
+      <td colspan="2">添加书籍明细</td>
+      <td></td>
+    </tr>
+    <tr   id="i_n_tr">
+      <td  id="i_n_tdl">书籍类别</td>
+      <td  id="i_n_tdc">
+      <%= select(:book,  :type_id,  options_for_select(Type.find_con))  %>
+      </td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr   id="i_n_tr">
+      <td  id="i_n_tdl">书籍名称</td>
+      <td  id="i_n_tdc">
+      <%= select(:info,  :book_id, {"请选择书籍"=>""})  %>
+      </td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">作者</td>
+      <td  id="i_n_tdc">
+        <%=  f.text_field  :author, :style  =>  'width:220px;' ,
+                                         :maxlength  =>  40  %>
+       </td>
+      <td  id="i_n_tdr">
+        <span  id="error">最多40个字符</span>
+      </td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">出版社</td>
+      <td  id="i_n_tdc">
+        <%=  f.text_field  :p_place,  :style  =>  'width:220px;',
+                                                     :maxlength  =>  40  %>
+       </td>
+      <td  id="i_n_tdr">
+        <span  id="error">最多40个字符</span>
+      </td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">出版年份</td>
+      <td  id="i_n_tdc">
+        <%=  f.text_field  :p_time,  :value => 2000  %>
+      </td>
+      <td  id="i_n_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:p_time].blank?  %>
+           <%=  @info.errors[:p_time][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">页数</td>
+      <td  id="i_n_tdc">
+        <%=  f.text_field  :p_num,  :value => 100  %>
+      </td>
+      <td  id="i_n_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:p_num].blank?  %>
+           <%=  @info.errors[:p_num][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">语言</td>
+      <td  id="i_n_tdc">
+        <%= select(:info,:language,options_for_select(Info.find_lan)) %>
+      </td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">开本</td>
+      <td  id="i_n_tdc">
+        <%=  f.text_field  :format,  :value => 16  %>
+      </td>
+      <td  id="i_n_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:format].blank?  %>
+           <%=  @info.errors[:format][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">简介</td>
+      <td  id="i_n_tdc">
+        <%=  f.text_area  :introduce,  
+                                         :style  =>  'width:220px;height:60px;font-size:14px;'  %>
+      </td>
+      <td  id="i_n_tdr">
+        <span id="error"> 
+           <%  if  !@info.errors[:introduce].blank?  %>
+           <%=  @info.errors[:introduce][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+      <%=  f.submit '保存'  %>
+      <td>
+    </tr>
+  </table>
+  <%  end  %>
+</div>
+<script type="text/javascript">
+  $(function (){
+    $("#book_type_id").change(function (){
+      $.ajax({
+        type:  "get",
+        url:  "/checktypeid/" + $(this).val(),
+        data:  "text",
+        success: function(data){
+          $("#info_book_id").html(data);
+        
+        }
+      });
+    }); 
+  });
+</script>
+</center>

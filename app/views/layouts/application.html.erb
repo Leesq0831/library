@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>图书馆</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+  <center>
+  <div  id="head">
+      <span> 欢迎进入图书管理系统</span>
+  </div>
+
+  <div  id="user">
+   <% if current_user.nil? %>
+      <%= link_to '登录', new_user_session_path %>
+      <%= link_to '注册', new_user_registration_path %> 
+  <% else %>
+      欢迎您:
+      <%= link_to current_user.email, edit_user_registration_path  %> | 
+      <%= link_to '退出登录', destroy_user_session_path, 
+                                              :method => :delete %>
+  
+      <div  id="dao">
+        <%=  link_to  '主页',  '../welcome/index'  %>
+        <%=  link_to  '类别列表',  types_path %>
+        <%=  link_to  '图书列表',  books_path  %>
+        <%=  link_to  '添加类别',  new_type_path  %>
+        <%=  link_to  '添加图书',  new_book_path %>
+      </div>
+   <% end %>
+  </div>
+  <div  id="top">
+    <span id="t"></span>
+  </div>
+   
+  </center>
+  <div  id="yield">
+    <%= yield %>
+  </div>
+  <center>
+    <div   id="bottom">
+    Copyright &copy;2016 苏ICP备16000001号
+    </div>  
+  </center>
+      <script src="//cdnjs.bootcss.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  
+       <script src="//cdnjs.bootcss.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+            
+  </body>
+</html>

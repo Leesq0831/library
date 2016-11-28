@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  c_num: 1
+  con: 1
+  product: one
+
+two:
+  c_num: 1
+  con: 1
+  product: two

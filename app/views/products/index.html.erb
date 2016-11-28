@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Products</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>P_name</th>
+      <th>P_price</th>
+      <th>P_num</th>
+      <th>P_salnum</th>
+      <th>Con</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product.p_name %></td>
+        <td><%= product.p_price %></td>
+        <td><%= product.p_num %></td>
+        <td><%= product.p_salNum %></td>
+        <td><%= product.con %></td>
+        <td>
+          <%=  form_for :car,  url:  cars_path,  :remote  =>  true  do  |f|  %>
+          <%=  product.id  %>
+          <%=  f.hidden_field :product_id,  :value  =>  product.id  %>
+          <%=  f.number_field  :c_num,  :min =>1,  :max  =>  product.p_num,
+                                                   :value => 1,  :style  =>  "width:60px;" %>
+          <%=  f.submit '加入购物车'  %>
+          <%  end  %>
+        </td>
+        <td><%= link_to 'Show', product %></td>
+        <td><%= link_to 'Edit', edit_product_path(product) %></td>
+        <td><%= link_to 'Destroy', product, method: :delete, 
+                                                                             data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= link_to '购物车', cars_path %>

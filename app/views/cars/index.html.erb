@@ -1,0 +1,125 @@
+<script type="text/javascript">
+  function checkall(field_name, state) {
+    var checkboxes = document.getElementsByTagName("input");
+    var count = checkboxes.length;
+    for (var i = 0; i < count; i++) {
+      if (checkboxes[i].type == "checkbox"&& checkboxes[i].name == field_name + "_ids[]"){
+          checkboxes[i].checked = state;
+      }
+    }
+    go();
+  }
+  function  go(){
+    var obj = document.getElementsByName("car_ids[]");
+    check_val = [];
+    for(k in obj){
+      if(obj[k].checked)
+          check_val.push(obj[k].value);
+    }
+         if  (check_val.length == 0){
+          check_val = 0;
+         }
+          $.ajax({
+            type:  "get",
+            url:  "cars/count?check_val=" + check_val,
+            data: "text",
+            success:function (data){
+              $("#order_cost").val("");
+              $("#order_cost").val(data);
+              $("#order_car_ids").val("");
+              $("#order_car_ids").val(check_val);
+            }
+          });
+          $.ajax({
+            type:  "get",
+            url:  "cars/count_num?check_val=" + check_val,
+            data: "text",
+            success:function (data){
+              $("#order_b_num").val("");
+              $("#order_b_num").val(data);
+              $("#order_car_ids").val("");
+              $("#order_car_ids").val(check_val);
+            }
+          });
+  }
+
+  function  reduce(id,price){
+    $.ajax({
+      type:  "get",
+      url:  "/cars/reduce?id=" + id,
+      data: "text",
+      success:function (data){
+        var ids = "c_num_"+id;
+        var sub = "suborder_b_num_"+id;
+        $("#"+ids+"").val("");
+        $("#"+sub+"").val("");
+        $("#"+ids+"").val(data);
+        $("#"+sub+"").val(data*price);
+      }
+    });
+    go();
+    go();
+  }
+
+  function  addnum(id,price){
+    $.ajax({
+      type:  "get",
+      url:  "/cars/add?id=" + id,
+      data: "text",
+      success:function (data){
+        var ids = "c_num_"+id;
+          var sub = "suborder_b_num_"+id;
+          $("#"+ids+"").val("");
+          $("#"+sub+"").val("");
+          $("#"+ids+"").val(data);
+          $("#"+sub+"").val(data*price);
+     } 
+    });
+    go();
+  }
+</script>
+<p id="notice"><%= notice %></p>
+
+<h1>Cars</h1>
+<%=  Car.reducenum(12)  %>
+<%=  form_for :order,  url:  orders_path,  :remote  =>  true   do  |f| %>
+<table  id="cartTable">
+    <tr>
+      <th>
+        <input type="checkbox"  id="checked" title="check"  onclick="checkall('car', this.checked);"/>&nbsp;&nbsp;全选
+      </th>
+      <th>商品</th>
+      <th>单价</th>
+      <th>数量</th>
+      <th>小计</th>
+      <th colspan="3">操作</th>
+    </tr>
+    <% @cars.each do |car| %>
+      <tr id="tr">
+        <td>
+          <input type="checkbox" name="car_ids[]" id="car_ids_" value="<%=  car.id   %>" onclick="go()" />
+        </td>
+        <td><%= Product.find_p_name(car.product_id) %> </td>
+        <td>￥<%= Product.find_p_price(car.product_id) %></td>
+        <td>
+          <input type="button" id="reb" value="-" onclick="reduce(<%=  car.id  %>,<%= Product.find_p_price(car.product_id) %>)" />
+          <input type="text"  id="c_num_<%= car.id %>" name = "c_num" value="<%= car.c_num %>"  style="width: 30px;border: none;"  readonly="readonly"  min="1"/>
+          <input type="button" id="add" value="+" onclick="addnum(<%=  car.id  %>,<%= Product.find_p_price(car.product_id) %>)" />
+        </td>
+        <td>
+          <input type="text" id="suborder_b_num_<%= car.id %>"  value=" <%=  Product.find_p_price(car.product_id)*car.c_num  %>" style="width: 40px;border: none;"/>
+        </td>
+        <td><%= link_to 'Show', car  %></td>
+        <td><%= link_to 'Edit', edit_car_path(car) %></td>
+        <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+</table>
+<input  type="button" onclick="go()" value="计算">
+共计选择<%=  f.text_field  :b_num,  :readonly  => "readonly",  :style  =>  "border:none; width:40px;",  :value => 0  %>件商品
+总价为￥<%=  f.text_field  :cost,  :readonly  => "readonly",  :style  =>  "border:none; width:50px;",  :value => 0  %>
+<%=  f.hidden_field  :car_ids %>
+<%= f.submit "提交订单" , :onclick  => "go()"  %>
+<%  end  %>
+<!-- <input type="text"  id="order_cos" name = "c_num" value="0"  style="width: 50px;border: none;"/> -->
+<!-- <input type="text"  id="order__num" name = "c_num" value="0"  style="width: 40px;border: none;"/> -->

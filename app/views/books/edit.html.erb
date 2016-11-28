@@ -1,0 +1,88 @@
+<style type="text/css">
+#e_tab{
+  width: 500px;
+  font-size: 16px;
+  font-weight: normal;
+  height: 60px;
+}
+#i_n_tab{
+  width: 500px;
+  font-size: 18px;
+  font-weight: normal;
+}
+#i_n_tdl{
+  width: 100px;
+  text-align:justify;
+  -moz-text-align-last:justify;
+  text-align-last:justify;
+}
+#i_n_tdr{
+  width: 190px;
+}
+#i_n_tr{
+  height: 20px;
+}
+
+#error{
+ height: 30px;
+ color: red;
+ font-size: 10px;
+ line-height: 10px;
+}
+</style>
+
+<center  >
+<%= form_for :book,  url: book_path(@book),   
+                                          :html => {:multipart => true},
+                                           method: :patch do |f| %>
+  <table  id="e_tab">
+    <tr>
+      <td  colspan="2">更新书籍</td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <%=  f.hidden_field  :type_id ,  :value =>  @book.type_id %>
+    <%=  f.hidden_field  :id ,  :value =>  @book.id  %>
+    <tr>
+      <td  id="i_n_tdl">书名</td>
+       <td  id="i_n_tdc">
+         <%= f.text_field :name,  :value  =>  @book.name,  
+                                                        :readonly  =>  'readonly'  %></td>
+      <td>
+        <span id="error"> 
+           <%  if  !@book.errors[:name].blank?  %>
+           <%=  @book.errors[:name][0] %>
+           <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td id="i_n_tdl">数量</td>
+      <td  id="i_n_tdc">
+        <%=  f.text_field  :num,  :value  =>  @book.num  %>
+      </td>
+      <td>
+        <span  id="error"> 
+          <%  if  !@book.errors[:num].blank?  %>
+            <%=  @book.errors[:num][0] %>
+          <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr >
+      <td  id="i_n_tdl"><%=  f.label  :Picture  %></td>
+      <td  id="i_n_tdc"><%= f.file_field :picture %></td>
+      <td>
+        <span  id="error"> 
+          <%  if  !@book.errors[:picture].blank?  %>
+            <%=  @book.errors[:picture][0] %>
+          <%  end  %>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td  colspan="2"><%=  f.submit  '保存'  %></td>
+      <td></td>
+    </tr>
+  </table>
+<%  end  %>
+</center>

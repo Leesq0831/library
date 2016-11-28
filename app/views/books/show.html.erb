@@ -1,0 +1,145 @@
+<style type="text/css">
+#stab{
+  width: 500px;
+  font-weight: normal;
+}
+#stab tr{
+  height: 18px;
+}
+  #stdl{
+   width: 100px;
+   font-size: 16px;
+   text-align:justify;
+   -moz-text-align-last:justify;
+   text-align-last:justify;
+  }
+ #stdr{
+  width: 300px;
+  font-size: 14px;
+  font-weight: normal;
+ } 
+  #ed{
+    width: 80px;
+  }
+  #b_b{
+    width: 300px;
+    height: 15px;
+  }
+</style>
+<center>
+<div  id="st_d">
+<table id="stab">
+  <caption>图书信息</caption>
+  <tr>
+    <td  id="stdl">图书类别</td>
+    <td  id="stdr"><%=  Type.find_btype(@books.type_id)%></td>
+    <td rowspan="6">
+      <%= image_tag(@books.picture_url, :width => 100) if @books.picture.present? %>
+    </td>
+  </tr>
+  <tr  id="stdr">
+    <td  id="stdl">图书名称</td>
+    <td><%=  @books.name  %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">可借数量</td>
+    <td  id="stdr"><%=  @books.num  %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">借出总量</td>
+    <td  id="stdr"><%=  @books.bn  %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">创建时间</td>
+    <td  id="stdr"><%=  @books.created_at  %></td>
+  </tr>
+  <tr>
+    <td id="stdl" style="height: 20px;">借出/还入</td>
+    <td>
+      <table id = "b_b">
+        <tr>
+         <td style="width: 150px;">
+         <%  if Book.find_ubn(@books.id,current_user.id)  == 0   || Book.find_ubn_e(@books.id,current_user.id)  ==  0  %>
+           <span  style="font-size: 12px;">无借出</span>
+         <%  else  %>
+           <%=  form_for :book,  remote:  true,
+                                                      url: book_path(@books.id) ,   
+                                                      method: :patch  do  |f| %>
+          <input type="hidden" name="num" value=2>
+          <%=  f.number_field  :bn,  
+                                                   :style  =>  "width:50px;font-size:12px;font-weight:normal",
+                                                   :min =>0,  :max  => Book.find_ubn(@books.id,current_user.id) ,
+                                                   :value  =>  Book.find_ubn(@books.id,current_user.id)  %>
+          <%=  f.hidden_field  :type_id,  :value  =>  @books.type_id  %>
+          <%=  f.hidden_field  :user_id,  :value  =>  current_user.id  %>
+          <%=  f.submit  '还入', :style  =>  "width:50px;height:26px;font-size:16px;"   %>
+          <%  end  %>
+          <%  end  %>
+         </td>
+         <td>
+           <%  if  @books.num >0  %>
+           <%=  form_for :book,   remote:  true,
+                                                       url: book_path(@books.id) ,
+                                                       method: :patch    do  |f| %>
+            <input type="hidden" name="num" value=3>
+           <%=  f.number_field  :bn, 
+                                                    :style  =>  "width:50px;font-size:12px;font-weight:normal",
+                                                    :min  =>  0,   :max  =>  @books.num,
+                                                    :value  => 0  %>
+           <%=  f.hidden_field  :type_id,  :value  =>  @books.type_id  %>
+           <%=  f.hidden_field  :user_id,  :value  =>  current_user.id  %>
+           <%=  f.submit  '借出' , :style  =>  "width:50px;height:26px;font-size:16px;"  %>
+           <%  end  %>
+           <%  else %>
+            不可借
+           <% end %>
+         </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  </table>
+  <%  if  @info.size  ==  0  %>
+  <div>
+  <%= link_to '添加明细', new_info_path %>
+  </div>
+  <%  else  %>
+  <%  @info.each  do  |infos|  %>
+  <table  id="stab">
+  <tr>
+    <td id="ed"><%=  link_to  '更新明细',edit_info_path(infos.id)  %></td>
+    <td>出版信息</td>
+  </tr>
+  <tr>
+    <td  id="stdl">作者</td>
+    <td  id="stdr"><%=  infos.author %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">出版社</td>
+    <td  id="stdr"><%=  infos.p_place %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">出版年份</td>
+    <td  id="stdr"><%=  infos.p_time  %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">页码</td>
+    <td  id="stdr"><%=  infos.p_num  %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">语种</td>
+    <td  id="stdr"><%=  infos.language  %></td>
+  </tr>
+  <tr>
+    <td  id="stdl">开本</td>
+    <td  id="stdr"><%=  infos.format %></td>
+  </tr>
+  <tr >
+    <td  id="stdl">简介</td>
+    <td  id="stdr" style="height: 55px;font-size: 13px;"><%=  infos.introduce %></td>
+  </tr>
+</table>
+<%  end  %>
+<%  end  %>
+</div>
+</center>

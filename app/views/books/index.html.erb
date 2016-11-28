@@ -1,0 +1,114 @@
+<style type="text/css">
+  table tr:hover {
+      background-color: #0180FE;
+      color: black;
+      cursor:hand;
+  }
+</style>
+
+<center>
+<div  id="tab">
+<table  >
+<%  if  !@book.nil?   %>
+  <caption>借出列表</caption>
+    <tr class = "tr1">
+      <th>图书类别</th>
+      <th>图书名称</th>
+      <th>可借数量</th>
+      <th>借出数量</th>
+      <th colspan="2">管理</th>
+      <th>更新</th>
+    </tr>
+    <%  if  @book.size == 0  %>
+    <tr>
+      <td  colspan="6">记录为空</td>
+    </tr>
+    <%  else  %>
+    <% @book.each do |book| %>
+    <tr>
+      <td><%=  Type.find_btype(book.type_id)%></td>
+      <td><%=  book.name %></td>
+      <td><%=  book.num %></td>
+     <td>
+       <%  if Book.find_ubn(book.id,current_user.id).nil? %>
+         0
+       <%  else  %>
+         <%=  Book.find_ubn(book.id,current_user.id)  %>
+       <%  end  %>
+     </td>
+     <td>
+     <%=  form_for :book,   url: book_path(book.id) , 
+                                                 remote:  true, 
+                                                 method: :delete,   
+                                                 data: { confirm: '确定删除？'} do  |f| %>
+     <%=  f.hidden_field  :id,  :value  =>  book.id  %>
+     <%=  f.submit  '删除'  %>
+     <%  end  %>  
+    <!--  <input id="bt_destroy_cib"  class="btn btn-mini btn-danger"  type="button"  value="删除" > -->                                                                                     
+     </td>
+     <td><%= link_to '查看', book_path(book) %></td>
+     <td>
+       <%=  link_to  '更新',edit_book_path(book)  %>
+     </td>
+     <%#= check_box_tag 'che', book.id %> 
+   </tr>
+  <%  end %>
+  <%  end  %>
+<%  else  %>
+<caption>图书列表</caption>
+  <tr class = "tr1">
+    <th>图书类别</th>
+    <th>图书名称</th>
+    <th>可借数量</th>
+    <th>借出数量</th>
+    <th colspan="2">管理</th>
+    <th>更新</th>
+  </tr>
+  <%  if  @books.size == 0  %>
+  <tr>
+    <td  colspan="6">记录为空</td>
+  </tr>
+  <%  else  %>
+  <% @books.each do |book| %>
+  <tr>
+    <input type="hidden"  name="come_in_bill_id"  value="<%=  book.id %>">
+    <td><%=  Type.find_btype(book.type_id)%></td>
+    <td><%=  book.name %></td>
+    <td><%=  book.num %></td>
+   <td>
+     <%  if Book.find_ubn(book.id,current_user.id).nil? %>
+       0
+     <%  else  %>
+       <%=  Book.find_ubn(book.id,current_user.id)  %>
+     <%  end  %>
+   </td>
+   <td>
+   <%=  form_for :book,   url: book_path(book.id) , 
+                                               remote:  true, 
+                                               method: :delete,   
+                                               data: { confirm: '确定删除？'},
+                                               remote: true  do  |f| %>
+   <%=  f.hidden_field  :id,  :value  =>  book.id  %>
+   <%=  f.submit  '删除'  %>
+   <%  end  %>  
+  <!--  <input id="bt_destroy_cib"  class="btn btn-mini btn-danger"  type="button"  value="删除" > -->                                                                                     
+   </td>
+   <td><%= link_to '查看', book_path(book) %></td>
+   <td>
+     <%=  link_to  '更新',edit_book_path(book)  %>
+   </td>
+   <%#= check_box_tag 'che', book.id %> 
+ </tr>
+<%  end %>
+<%  end  %>
+<%  end  %>
+</table>
+</div>
+<div   id="page">
+<%  if  !@book.nil?  %>
+  <%=  will_paginate  @book   %>
+<%  else  %>
+  <%=  will_paginate  @books   %>
+<%  end  %>
+</div>
+</center>

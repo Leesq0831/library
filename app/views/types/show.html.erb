@@ -1,0 +1,82 @@
+
+<center>
+<div  id="tab">
+<table id = "n_tab_t">
+<caption>图书列表</caption>
+  <tr class = "tr1">
+    <th>图书类别</th>
+    <th>图书名称</th>
+    <th>可借数量</th>
+    <th>借出数量</th>
+    <th colspan="4">管理</th>
+    <th>修改</th>
+  </tr>
+  <%  if  @books.size == 0  %>
+  <tr>
+    <td  colspan="7">记录为空</td>
+  </tr>
+  <%  else  %>
+  <% @books.each do |book| %>
+  <tr>
+    <td><%=  Type.find_btype(book.type_id)%></td>
+    <td><%=  book.name %></td>
+    <td><%=  book.num %></td>
+    <td>
+      <%  if Book.find_ubn(book.id,current_user.id).nil? %>
+        0
+      <%  else  %>
+        <%=  Book.find_ubn(book.id,current_user.id)  %>
+      <%  end  %>
+    </td>
+    <td style="width:85px;">
+    <%  if Book.find_ubn(book.id,current_user.id)  == 0   || Book.find_ubn_e(book.id,current_user.id)  ==  0  %>
+      <span  style="font-size: 12px;">无借出</span>
+    <%  else  %>
+    <%=  form_for :book,  url: book_path(book.id) ,  
+                                               remote:  true,
+                                               method: :patch  do  |f| %>
+   <input type="hidden" name="num" value=1/>
+   <%=  f.hidden_field  :type_id,  :value  =>  book.type_id  %>
+   <%=  f.hidden_field  :user_id,  :value  =>  current_user.id  %>
+   <%=  f.submit  '还入'  %>
+   <%  end  %>
+   <%  end  %>
+   </td>
+    <td>
+     <%  if  book.num >0  %>
+     <%=  form_for :book,   url: book_path(book.id) ,
+                                                 remote:  true,
+                                                 method: :patch    do  |f| %>
+     <input type="hidden" name="num" value=0/>
+     <%=  f.hidden_field  :type_id,  :value  =>  book.type_id  %>
+     <%=  f.hidden_field  :user_id,  :value  =>  current_user.id  %>
+     <%=  f.submit  '借出'  %>
+     <%  end  %>
+     <%  else %>
+      不可借
+     <% end %>
+   </td>
+   <td>
+   <%=  form_for :book,   url: book_path(book.id) ,  
+                                               method: :delete, 
+                                               remote:  true,  
+                                               data: { confirm: '确定删除？'}  do  |f| %>
+   <%=  f.hidden_field  :id,  :value  =>  book.id  %>
+   <%=  f.hidden_field  :type_id,  :value  =>  book.type_id  %>
+   <%=  f.submit  '删除'  %>
+   <%  end  %>                                                                                       
+   </td>
+   <td><%= link_to '查看', book_path(book) %></td>
+   <td>
+     <%=  link_to  '修改',edit_book_path(book)  %>
+   </td>
+       <%#= check_box_tag 'che', book.id %>
+ </tr>
+<% end %>
+<%  end  %>
+</table>
+</div>
+<div   id="page">
+  <%=  will_paginate  @books   %>
+</div>
+</center>

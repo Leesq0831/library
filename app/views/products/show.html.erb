@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>P name:</strong>
+  <%= @product.p_name %>
+</p>
+
+<p>
+  <strong>P price:</strong>
+  <%= @product.p_price %>
+</p>
+
+<p>
+  <strong>P num:</strong>
+  <%= @product.p_num %>
+</p>
+
+<p>
+  <strong>P salnum:</strong>
+  <%= @product.p_salNum %>
+</p>
+
+<p>
+  <strong>Con:</strong>
+  <%= @product.con %>
+</p>
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>

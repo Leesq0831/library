@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Order info:</strong><br>
+  订单提交成功，请选择支付<br/>
+  订单编号 : <%=  @order.id  %><br/>
+  订单明细 : <%=  Car.find_pro_id(@order.car_ids) %><br/>
+  商品总额 : <%=  @order.cost  %><br/>
+  商品数量 : <%=  @order.b_num  %><br/>
+  支付状态 : <%=   @order.pay_con == 3 ? '已支付':'未支付'  %>
+</p>
+<%  if  @order.pay_con == 2  %>
+  <%=  link_to  '点击支付', {:controller => "orders",   :action => "submitorder",  :id  =>  @order.id},   :remote => true  %>
+<%  end  %>
+<%=  link_to  '返回购物车', cars_path  %><br/>

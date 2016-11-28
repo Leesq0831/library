@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  author: MyString
+  p_place: MyString
+  p_time: 2016-11-16 12:10:56
+  p_num: 1
+  langugae: MyString
+  format: 1
+  introduce: MyString
+  book: one
+
+two:
+  author: MyString
+  p_place: MyString
+  p_time: 2016-11-16 12:10:56
+  p_num: 1
+  langugae: MyString
+  format: 1
+  introduce: MyString
+  book: two

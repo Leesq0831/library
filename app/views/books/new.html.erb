@@ -1,0 +1,116 @@
+<style type="text/css">
+  #n_back{
+    width: 100px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 5px; 
+  }
+  #n_c_d{
+    height: 297px;
+    width: 1280px;
+  }
+
+  #n_tab{
+     width: 400px;
+     height: 200px;
+     text-align: center;
+     border: 1px;
+     font-size: 18px;
+     font-weight: normal;
+  }
+
+  #tr{
+    height: 50px;
+  }
+  #tdl{
+    width: 80px;
+    text-align: center;
+  }
+  #tdr{
+    width: 150px;
+    text-align: center;
+  }
+#error{
+ height: 30px;
+ color: red;
+ font-size: 10px;
+ line-height: 10px;
+}
+select{
+  width: 210px;
+}
+</style>
+<script type="text/javascript">
+  $(function  (){
+    $("#book__name").blur(function (){
+      var reg = /^[\u4e00-\u9fa5\w]{2,40}$/
+      if (!$(this).val() == "") {
+              if(reg.test($(this).val())==false){
+              $("#error").html("名称格式不正确");
+              }else{
+                  $.ajax({
+                    type:  "get",
+                    url:  "/books/checkname?name = " +$(this).val(),
+                    data: "text",
+                    success:function (data){
+                      if  (data == "true"){
+                        $("#error").html("名称可用");
+                        setTimeout('$("#error").html("")',3000);
+                      }else{
+                        $("#error").html("名称已存在");
+                        setTimeout('$("#error").html("")',3000);
+                      }
+
+                    }
+                  });
+    }
+  }else{
+    $("#error").html("为空");
+  }
+    });
+  });
+
+  function  getOK(){
+
+  }
+</script>
+
+<center>
+<%#= render 'form' %>
+
+<%=  form_tag(batch_add_books_path, method:  "get")   do %>
+  <table  id="parttable">
+     <caption>Add</caption>
+     <tr>
+        <th>类型</th>
+        <th>书名</th>
+        <th>数量</th>
+        <th>操作</th>
+        <th>MESSAGE</th>
+      </tr>
+      <tr>
+        <td><%= select_tag("book[][type_id]" ,options_for_select(Type.find_con))%></td>
+        <td><%=  text_field_tag  "book[][name]"  %></td>
+        <td><%=  number_field_tag "book[][num]"  %></td>
+        <td>
+          <input type="button"   value="增加" id="addTable" onclick="add_tr(this)"/>
+          <input type="button"   value="删除" id="deleteTable" onclick="del_tr(this)"/>
+        </td>
+        <td><span  id="error"></span></td>
+      </tr>
+  </table>
+<%=  submit_tag '保存' %>
+<%  end  %>
+<%#= select(:book,:type_id,options_for_select(Type.find_con))%>  
+</center>
+<script type="text/javascript">
+  function add_tr(obj) {
+     var tr = $(obj).parent().parent();
+     tr.after(tr.clone());
+   }
+   function del_tr(obj) {
+       $(obj).parent().parent().remove();
+     }
+</script>

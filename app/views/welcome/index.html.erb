@@ -1,0 +1,58 @@
+<style type="text/css">
+
+#menu{
+  width:800px;
+  height: 100px;
+  margin-left: 280px;
+  font-family: 楷体;
+  font-size: 26px;
+  text-align: center;
+}
+
+  #div1{
+        float: left;
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        background-color: #99cccc;
+        line-height: 150px;
+  }
+  #div2{
+        float:right;
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        background-color: #99cccc;
+        line-height: 150px;
+  }
+  #div3{
+        float:left;
+        margin-left: 180px;
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        background-color: #99cccc;
+        line-height: 150px;
+  }	
+  #text{
+    height: 100px;
+  }
+</style>
+
+<div  id = "menu">
+<div  id="text"></div>
+ <% if current_user.nil? %>
+    <%= link_to '登录', new_user_session_path %>
+    <%= link_to '注册', new_user_registration_path %> 
+<% else %>
+<div  id = "div1">
+<%= link_to '进入列表', types_path %>
+</div>
+<div  id  =  "div3">
+  <%= link_to '添加类别', new_type_path %>
+</div>
+<div  id="div2">
+<%= link_to '添加图书', new_book_path %>
+</div>
+<%  end  %>
+</div>

@@ -1,0 +1,75 @@
+<script type="text/javascript">
+  $(function  (){
+    $("#book_name").blur(function (){
+      var reg = /^[\u4e00-\u9fa5\w]{2,10}$/
+      if (!$(this).val() == "") {
+              if(reg.test($(this).val())==false){
+              $("#error1").html("名称格式不正确");
+              }else{
+      $.ajax({
+        type:  "get",
+        url:  "/checkname/" +$(this).val(),
+        data: "text",
+        success:function (data){
+          if  (data == "true"){
+            $("#error1").html("名称可用");
+            setTimeout('$("#error1").html("")',3000);
+          }else{
+            $("#error1").html("名称已存在");
+            setTimeout('$("#error1").html("")',3000);
+          }
+
+        }
+      });
+    }
+  }else{
+    $("#error1").html("为空");
+  }
+    });
+  });
+</script>
+
+<div  id="n_c_d">
+    <%=  form_for(@book,  :html => {:multipart => true})  do  |f|  %>
+      <table  id="n_tab">
+         <tr>
+        <td  id="tdl"> 类型</td>
+        <td>
+          <%= select(:book,:type_id,options_for_select(Type.find_con))%>
+        </td>
+        <td></td>
+      </tr>
+      <tr  id="tr">
+        <td  id="tdl"><%=  f.label  :书名 %></td>
+        <td><%=  f.text_field  :name,  :placeholder  =>  '1-50字符' %></td>
+        <td  id="tdr">
+          <span id="error"> 
+             <%  if  !@book.errors[:name].blank?  %>
+             <%=  @book.errors[:name][0] %>
+             <%  end  %>
+          </span>
+          <span  id="error1" style="font-size: 10px;color: red"></span>
+        </td>
+      </tr>
+      <tr id="tr">
+        <td  id="tdl"><%=  f.label  :数量  %></td>
+        <td><%=  f.text_field  :num ,:value  => 0%></td>
+        <td>
+          <span  id="error"> 
+            <%  if  !@book.errors[:num].blank?  %>
+              <%=  @book.errors[:num][0] %>
+            <%  end  %>
+          </span>
+         </td>
+      </tr>
+      <tr  id="tr">
+        <td  id="tdl"><%=  f.label  :Picture  %></td>
+        <td><%= f.file_field :picture %></td>
+      </tr>
+      <tr id="tr">
+        <td colspan="2"><%=  f.submit '保存' %> </td>
+        <td></td>
+      </tr>
+  </table>
+<%  end  %>
+</div>

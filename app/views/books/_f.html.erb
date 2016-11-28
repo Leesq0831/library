@@ -1,0 +1,52 @@
+<div  id="n_i_t">
+  <%=  form_for :info,  url:  infos_path do  |f|  %>
+  <table  id="i_n_tab">
+    <tr>
+      <td colspan="2">添加书籍明细</td>
+      <td></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">作者</td>
+      <td  id="i_n_tdc"><%=  f.text_field  :author  %></td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">出版社</td>
+      <td  id="i_n_tdc"><%=  f.text_field  :p_place  %></td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">出版年份</td>
+      <td  id="i_n_tdc"><%=  f.text_field  :p_time  %></td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">页数</td>
+      <td  id="i_n_tdc"><%=  f.text_field  :p_num  %></td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">语言</td>
+      <td  id="i_n_tdc"><%=  f.text_field  :language  %></td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">开本</td>
+      <td  id="i_n_tdc"><%=  f.text_field  :format  %></td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr  id="i_n_tr">
+      <td  id="i_n_tdl">简介</td>
+      <td  id="i_n_tdc"><%=  f.text_field  :introduce %></td>
+      <td  id="i_n_tdr"></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+      <%=  f.hidden_field  :book_id ,  :value =>  @book.id  %>
+      <%=  f.submit '保存'  %>
+      <td>
+      <td></td>
+    </tr>
+  </table>
+  <%  end  %>
+</div>

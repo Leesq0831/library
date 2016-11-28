@@ -1,0 +1,93 @@
+<script type="text/javascript">
+  function toggle_checkall(field_name, state) {
+    var checkboxes = document.getElementsByTagName("input");
+    var count = checkboxes.length;
+    for (var i = 0; i < count; i++) {
+      if (checkboxes[i].type == "checkbox"
+          && checkboxes[i].name == field_name + "_ids[]") {
+        checkboxes[i].checked = state;
+      }
+    }
+  }
+</script>
+<center>
+<div>
+<%=  form_tag  books_path,   method:  :get,  :onsubmit  => "return a()"  do  %>
+  书名:<%=   radio_button_tag  "se_t",  "name", "checked"  %>
+  作者:<%=   radio_button_tag  "se_t",  "author" %>
+  出版时间:<%=   radio_button_tag  "se_t",  "p_time" %>
+  类别:<%=   radio_button_tag  "se_t",  "b_type" %>
+  全文:<%=   radio_button_tag  "se_t",  "all" %>
+  <%=  text_field_tag  :search %>
+  <%=  submit_tag '搜索'  %>
+<%  end  %>
+<%=  link_to  "delete  empty",  "types/a" , remote: true,  method:  :delete %>
+<%=  link_to  "recovery",  "types/b" , remote: true,  method:  :delete %>
+<%=  form_tag  books_path,  method:  :get  do  %>
+  <input type="hidden" name="user_id" value="<%=  current_user.id %>">
+  <input type="hidden" name="a" value= 1 >
+  <%=  submit_tag  '查询已借出'  %>
+<%  end  %>
+<div  id="i_tab_d">
+<%=  form_tag("/deletecheck",  method:  "get", 
+                                                            data: { confirm: '确定删除？'})   do %>
+<table  id = "i_tab">
+<caption>图书列表</caption>
+  <tr class = "tr1"  >
+    <th>图书类别</th>
+    <th colspan="3">管理</th>
+    <th>种数</th>
+    <th>
+      <input type="checkbox"  id="checked" 
+                    onclick="toggle_checkall('type', this.checked);" /><%= submit_tag "删除选中" %>
+      </th>
+  </tr>
+  <%  if  @types.size == 0  %>
+  <tr>
+    <td  colspan="6">记录为空</td>
+  </tr>
+  <%  else  %>
+
+  <% @types.each do |type| %>
+    <tr  id="type_<%= type.id %>">
+      <td><%=  type.b_type %></td>
+      <td><%= link_to '查看', type_path(type) %></td>
+      <td><%= link_to '更新', edit_type_path(type)  %></td>
+      <td><%= link_to '删除', type_path(type),  method: :delete, 
+                                                                                     remote: true,
+                                                                                     data: { confirm: '确定删除？'}%></td>
+        <td><%= Book.con(type.id)  %></td>
+        <td><%=  check_box_tag "type_ids[]", type.id %> </td>
+      </tr>
+  <% end %>
+  <%  end  %>
+</table>
+<%  end  %>
+</div>
+<div   id="page">
+  <%=  will_paginate  @books   %>
+</div>
+  <%= link_to "CSV", types_path(format: "csv") %>  
+  <%= link_to "EXCEL", types_path(format: "xls") %>  
+
+<div class='html-tag city-group'>
+<%#=  form_tag("/deletecheck",  method:  "get")   do %>
+  <select class='city-select city-province'  name="province">
+    <option> --省份--</option>
+    <%= options_for_select(ChinaCity.list)  %>
+  </select>
+  <select class='city-select city-city'  name="city">
+    <option>--城市--</option>
+  </select>
+  <select class='city-select city-district'  name="district">
+    <option>--地区--</option>
+  </select>
+<%#= submit_tag "submit" %>
+<%#  end  %>
+</div>
+<!-- <%#=  select_month(Date.today)  %><%#=  select_day(12)  %>
+time<%#=  select_time(Time.now)  %>hour<%#=  select_hour(5)  %>
+<%#=  select_minute(15)  %><%#=  select_second(Time.now)  %>
+<%#=  select_year(2011,  :field_name  =>  'birth',  :start_year  =>  1900)  %> -->
+</center>
+
